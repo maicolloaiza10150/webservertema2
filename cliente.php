@@ -1,20 +1,32 @@
 <?php
-$options = array( 
-    'location' => 'http://localhost/webservices/appwebservices/server.php',
-    'uri' => 'http://localhost/webservices/appwebservices/'
-); 
+$options = array(
+'location' =>'http://localhost/webservices/appwebservices/server.php',
+        'uri' => 'http://localhost/webservices/appwebservices/'
+);
 
-$client = new SoapClient(NULL, $options);
+try {
+    // Crear el cliente SOAP
+    $client = new SoapClient(null, $options);
 
-$nombre = "Usuario"; 
+    // Llamar al método saludar
+    $nombre = "Usuario";
+    echo $client->saludar($nombre . '！！') . "</br>";
 
-echo $client->saludar($nombre . '!!') . "</br>"; 
+    // Llamar al método operacion
+    echo "El Resultado de la suma es: " . $client->operacion(10, 5) . "</br>";
 
-$num1 = 10;
-$num2 = 5;
+    // Llamar al método getProduct (corregido a getProducts si es necesario)
+    $productos = $client->getProducts() ;
+echo "Los productos son: " . implode(", ", $productos);
+echo"</br>";
+$usuario = "maicol";  // Cambia esto para probar con otros usuarios
+$clave = "123";
 
-echo "El resultado de la suma es: " . $client->suma($num1, $num2) . "</br>"; 
-echo "El resultado de la resta es: " . $client->resta($num1, $num2) . "</br>"; 
-echo "El resultado de la multiplicación es: " . $client->multiplicacion($num1, $num2) . "</br>"; 
-echo "El resultado de la división es: " . $client->division($num1, $num2) . "</br>"; 
+echo $client->validarUsuario($usuario, $clave);
+
+
+} catch (SoapFault $e) {
+    // Manejo de errores
+    echo "Error en el servicio SOAP: " . $e->getMessage();
+}
 ?>
